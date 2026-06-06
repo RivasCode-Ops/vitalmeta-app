@@ -1,15 +1,14 @@
 FROM node:22-alpine
 
 RUN apk add --no-cache mysql-client curl
-RUN npm install -g pnpm@latest
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+COPY package.json ./
+RUN npm install --legacy-peer-deps
 
 COPY . .
-RUN pnpm run build
+RUN npm run build
 
 RUN chmod +x scripts/start.sh
 EXPOSE 3000
